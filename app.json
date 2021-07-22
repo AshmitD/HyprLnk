@@ -1,0 +1,35 @@
+{
+  "expo": {
+    "name": "StarsWithinReachMobileV4",
+    "slug": "StarsWithinReachMobileV4",
+    "version": "5.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "splash": {
+      "image": "./assets/splash.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#ffffff"
+    },
+    "updates": {
+      "fallbackToCacheTimeout": 0
+    },
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.ashmitdewan.starswithinreach",
+          "infoPlist": {
+            "NSPhotoLibraryUsageDescription": "This app takes user-selected photos from the photo library, saves them in the database and displays them in the 'feed' feature. Only photos that the user chooses are stored and displayed in the various feeds of our app. We will only store photos that you, the user, select and will display only photos that you, the user, select."
+          }
+    },
+    "web": {
+      "favicon": "./assets/favicon.png"
+    },
+    "android": {
+      "package": "com.ashmitdewan.starswithinreach"
+    },
+    "sdkVersion": "39.0.0"
+  }
+
+}
