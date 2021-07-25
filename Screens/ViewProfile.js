@@ -13,20 +13,20 @@ export default class ViewProfile extends React.Component {
     constructor(props) {
         super(props)
         const { params } = this.props.navigation.state;
-        const thisUser = params ? params.otherParam : null;
+        const thisclub = params ? params.otherParam : null;
         this.state = {
-            user: thisUser
+            club: thisclub
         }
 
     }
     handleChat = () => {
-        // this.state.user.email
-        // firebase.auth().current.user.email
-        console.log("This is email in handle", this.state.user.email, firebase.auth().currentUser.email)
-        Fire.shared.addChat({ "email1": this.state.user.email, "email2": firebase.auth().currentUser.email }).then((thisID) => {
+        // this.state.club.email
+        // firebase.auth().current.club.email
+        console.log("This is email in handle", this.state.club.repEmail, firebase.auth().currentUser.email)
+        Fire.shared.addChat({ "email1": this.state.club.email, "email2": firebase.auth().currentUser.email }).then((thisID) => {
             console.log("this is id in handle chat", thisID)
             this.props.navigation.navigate('ChatScreen', {
-                "id": thisID, "name": this.state.user.name
+                "id": thisID, "name": this.state.club.name
             })
         })
 
@@ -47,20 +47,20 @@ export default class ViewProfile extends React.Component {
                     <View style={styles.avatar}>
                         <Text style={{ fontSize: 35, color: "#3772ff", textAlign: 'center', alignItems: 'center' }}>AS</Text>
                     </View>
-                    <Text style={styles.name} >{this.state.user.name}</Text>
-                    <Text style={styles.description}>{this.state.user.shortBio}</Text>
+                    <Text style={styles.name} >{this.state.club.title}</Text>
+                    <Text style={styles.description}>{this.state.club.descrip}</Text>
                     <View style={{ marginTop: 25, width: "85%", alignSelf: 'center' }}>
                     </View>
 
                 </View>
                 <TouchableOpacity style={{ backgroundColor: '#fff', width: '80%', alignSelf: 'center', paddingVertical: 15, borderRadius: 15 }}>
-                    <Text style={{ color: '#3772ff', textAlign: 'center', fontWeight: '500', fontSize: 21 }}>I am a {this.state.user.who.toUpperCase()}</Text>
+                  
                 </TouchableOpacity>
 
                 <View style={styles.content}>
-                    <TouchableOpacity onPress={() => this.saveFromPfp()} style={{ backgroundColor: '#3772ff', width: '80%', alignSelf: 'center', marginTop: '5%', paddingVertical: 15, borderRadius: 15 }}>
+                    <TouchableOpacity onPress={() => this.handleChat()} style={{ backgroundColor: '#3772ff', width: '80%', alignSelf: 'center', marginTop: '5%', paddingVertical: 15, borderRadius: 15 }}>
 
-                        <Text style={{ color: '#fff', textAlign: 'center', fontWeight: '500', fontSize: 21 }}>CHAT WITH ME</Text>
+                        <Text style={{ color: '#fff', textAlign: 'center', fontWeight: '500', fontSize: 21 }}>CHAT WITH Club Rep</Text>
                     </TouchableOpacity>
                 </View>
 

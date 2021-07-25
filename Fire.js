@@ -112,7 +112,7 @@ class Fire {
     }
     getProjs = async (email) => {
         let allProjects = []
-        return this.firestore.collection("projects").where("ownerEmail", "==", email)
+        return this.firestore.collection("projects").where("repEmail", "==", email)
                 .get()
                 .then(function (querySnapshot) {
                     //TODO MAKE THIS HANDLE THE CASE WHEN THERE ARE NO DOCUMENTS. IF YOU ARE ERRORING USING THIS METHOD, THAT MIGHT BE THE CAUSE.
@@ -131,8 +131,8 @@ class Fire {
     delProj = async (proj) => {
         console.log('this is the projectolookin', proj)
         const projectID = proj.id
-        proj.proj.userEmails.forEach(email => {
-            this.getUserData(email).then(({ user,id }) => {
+      
+            this.getUserData(proj.proj.repEmail).then(({ user,id }) => {
                 const indexOfProjectID = user['projects'].indexOf(projectID)
                 
                 const newArr = user['projects']
@@ -143,7 +143,7 @@ class Fire {
                 userDoc.update({
                     projects: newArr
                 });
-        }) 
+        
     })
     console.log('here?')
     let userRef = firebase.database().ref('messages/specificChatss/' + proj.proj.groupChatID);
@@ -478,17 +478,23 @@ class Fire {
             })
         })
     }
-    addProject = async ({ title, descrip, topics }) => {
-     
-
-        return this.firestore.collection("projects").add({
+    addProject = async ({ title, descrip, topics, numStudents }) => {
+    
+return this.getUserData(firebase.auth().currentUser.email).then((user) =>{
+            console.log("Do you get here?v4", user)
+            const u = user.name
+           return this.firestore.collection("projects").add({
                 title: title,
                 descrip: descrip,
                 topics: topics,
+                name: user.user.name,
                 repEmail: firebase.auth().currentUser.email,
+                numStudents:numStudents
             })  .catch(function (error) {
                 alert("Error adding project, please try again later");
-            })
+        })
+})
+       
                 // .then((docRef) => {
                 //     const chatRef = JSON.stringify(id).split("specificChatss/")[1]
                 //     const chatId = chatRef.split(`"`)[0]
@@ -508,9 +514,9 @@ class Fire {
                 //     })
                    
                 // })
-                .catch(function (error) {
-                    console.error("Error adding document: ", error);
-                });
+                // .catch(function (error) {
+                //     console.error("Error adding document: ", error);
+                // });
     }
     uploadPhotoAsync = async uri => {
         const path = `photos/${this.uid}/${Date.now()}.jpg`

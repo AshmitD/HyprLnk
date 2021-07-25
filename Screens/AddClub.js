@@ -7,17 +7,32 @@ import DropDownPicker from 'react-native-dropdown-picker';
 import CustomMultiPicker from "react-native-multiple-select-list";
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 var userList = ["ASTRONOMY", "COMPUTER SCIENCE", "DEBATE","ENGINEERING","MED","SOCIAL IMPACT", "SPORTS"];
-export default class CreateNewProjectScreen extends React.Component {
+export default class AddClub extends React.Component {
     static navigationOptions = {  
         headerShown: false
     };
-    state ={
+   constructor(props) {
+       super(props)
+       this.state ={
         title: "",
         descrip:"",
-
+        name: "g",
         error: null,
-        topics: []
+        topics: [],
+        numStudents: null,
     }
+ //  this.fillUser()
+   }
+//    componentDidMount() {
+//     //this.fillUser = this.fillUser.bind(this);
+// }
+    // fillUser = () => {
+    //     Fire.shared.getUserData(firebase.auth().currentUser.email).then((user, id) => {
+    //         console.log('this is user', user)
+    //         this.setState({name: user.name})
+    //     })
+
+    //   }
     
     handleSignUp = () => { 
        if(this.state.descrip.length == 0) {
@@ -27,11 +42,11 @@ export default class CreateNewProjectScreen extends React.Component {
             Alert.alert("Please enter some topics.")
         }else {
 
-        return Fire.shared.addProject({title: this.state.title, descrip: this.state.descrip, topics: this.state.topics})
+        return Fire.shared.addProject({title: this.state.title, descrip: this.state.descrip, topics: this.state.topics, name: this.state.name, numStudents: this.state.numStudents})
         .then(userCredentials => {
-            console.log('credentials: ', userCredentials);
+         
             const { params } = this.props.navigation.state;
-            console.log("This is params", params)
+
          
                 this.props.navigation.navigate("Home")
             
@@ -57,7 +72,7 @@ export default class CreateNewProjectScreen extends React.Component {
              {/* <Image style = {{left: 305, width: 100, height: 100, marginTop: 2}}source ={require('../forreallogo.png')}></Image> */}
              <View style={styles.header}>
               <View style={styles.linesContainer}>
-              <View style={styles.plus}><TouchableOpacity onPress = {() => this.props.navigation.navigate('Projects')}><Ionicons name="ios-arrow-round-back" size={32} color={"#fff"} /></TouchableOpacity></View>
+              <View style={styles.plus}><TouchableOpacity onPress = {() => this.props.navigation.navigate('Home')}><Ionicons name="ios-arrow-round-back" size={32} color={"#fff"} /></TouchableOpacity></View>
                 <Text style={styles.heading}>Add Club</Text>
               
               </View>
@@ -95,7 +110,7 @@ export default class CreateNewProjectScreen extends React.Component {
                     style = {styles.longText}
                   keyboardType = 'numeric'
                     multiline = {true} numberOfLines={4} 
-                    onChangeText ={resources => this.setState({resources})}
+                    onChangeText ={numStudents => this.setState({numStudents})}
                     value = {this.state.resources}
                     ></TextInput>
                 </View>

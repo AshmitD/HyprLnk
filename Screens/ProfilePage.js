@@ -50,9 +50,10 @@ export default class ProfilePage extends React.Component {
   renderProj = (project) => {
     console.log("This is the project", project)
     return (
-      <View style={{alignItems: 'center',width: '80%', paddingVertical: 15, borderBottomColor: '#3772ff', borderBottomWidth: 4,alignSelf: 'center',flexDirection: 'row',  }}><Text style={{ width: '70%',fontSize: 16, color: '#3772ff',}}>{project.proj.title}</Text><TouchableOpacity onPress={() => this.deleteProject(project)}><Ionicons style = {{left: '300%'}}color = '#FA4D50' size = {25} name = "ios-close-circle-outline"></Ionicons></TouchableOpacity></View>
+      <View style={{alignItems: 'center',width: '80%', paddingVertical: 15, borderBottomColor: '#3772ff', borderBottomWidth: 4,alignSelf: 'center',flexDirection: 'row',  }}><Text style={{ width: '70%',fontSize: 16, color: '#3772ff',}}>{project.proj.title}</Text><TouchableOpacity onPress={() => this.deleteProject(project.proj)}><Ionicons style = {{left: '300%'}}color = '#FA4D50' size = {25} name = "ios-close-circle-outline"></Ionicons></TouchableOpacity></View>
     )
   }
+
   fillUser = () => {
     Fire.shared.getUserData(firebase.auth().currentUser.email).then((user, id) => {
       console.log("this is th euser")
@@ -81,16 +82,15 @@ export default class ProfilePage extends React.Component {
     return (
       <View style={styles.container}>
         <View style={styles.header}>
-        <TouchableOpacity style={styles.back} onPress={() => this.props.navigation.navigate('Home')
-                    }>
-                        <TouchableOpacity onPress ={() => this.props.navigation.navigate("AddClub", {ow: 5, hello: () => {console.log('bro'); return Promise.resolve()}})} style={{  paddingTop:'5%', left: "100%" }}><Ionicons size={36} style = {{fontWeight: "800"}}color={"#24305E"}  name="ios-add-circle-outline"></Ionicons></TouchableOpacity>
-                        <Ionicons name="ios-arrow-round-back" size={24} color="#24305e"></Ionicons>
-                    </TouchableOpacity>
+      
+         
+                       
+
           <View style={styles.avatar}>
-            <Text style={{ fontSize: 35, color: "#3772ff", textAlign: 'center', alignItems: 'center' }}>AS</Text>
+            <Text style={{ fontSize: 35, color: "#3772ff", textAlign: 'center', alignItems: 'center' }}>{this.state.name.charAt(0)}</Text><TouchableOpacity onPress ={() => this.props.navigation.navigate("AddClub", {ow: 5, hello: () => {console.log('bro'); return Promise.resolve()}})} style={{  paddingTop:25, left: "100%" }}><Ionicons size={36} style = {{fontWeight: "800"}}color={"#24305E"}  name="ios-add-circle-outline"></Ionicons></TouchableOpacity>
           </View>
           <TextInput style={styles.name} onChangeText={name => this.setState({ name })} value={this.state.name}></TextInput>
-          <TextInput style={styles.description} scrollEnabled = {true}  onChangeText={shortBio => this.setState({ shortBio })} value={this.state.shortBio}></TextInput>
+         
        
 
 

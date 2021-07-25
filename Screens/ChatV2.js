@@ -12,6 +12,8 @@ import {
 import filter from 'lodash.filter';
 import { topic } from 'firebase-functions/lib/providers/pubsub';
 import { TouchableOpacity } from 'react-native-gesture-handler';
+import Fire from '../Fire';
+import { user } from 'firebase-functions/lib/providers/auth';
 
 export default class HomeScreen extends React.Component {
   constructor(props) {
@@ -70,6 +72,9 @@ console.log("This is t", t)
  
  
 };
+ 
+
+
 contains = ({ title, descrip, topics }, text) => {
   
   const formattedQuery = (text.toLowerCase());
@@ -186,16 +191,31 @@ renderHeader= () => {
         data={this.state.setData}
         keyExtractor={item => item.first}
         renderItem={({ item }) => (
+          
           <View style={styles.listItem}>
+              <TouchableOpacity onPress={() => this.props.navigation.navigate('ViewProfile', {
+                  otherParam: item.projects
+                })}>
             {/* <Image
               source={{ uri: item.picture.thumbnail }}
               style={styles.coverImage}
             /> */}
             <View style={styles.metaInfo}>
               {console.log("this is item", item)}
-              <Text style={styles.title}>{`${item.projects.title}
-              `}</Text>
+              <Text style={styles.title}>{`${item.projects.title}`}
+              </Text>
+              <Text style={styles.title}>{`${item.projects.descrip}`}
+              </Text>
+              <Text style={styles.title}>{`${item.projects.topics.toString().toUpperCase()}`}
+              </Text>
+              <Text style={styles.title}>{`${item.projects.descrip}`}
+              </Text>
+            
+              <Text style={styles.title}>{`${item.projects.name}`} 
+
+              </Text>
             </View>
+            </TouchableOpacity>
           </View>
         )}
       />
