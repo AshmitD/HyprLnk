@@ -185,16 +185,22 @@ class Fire {
                 });
         })
     }
-    save = async ({name, shortBio, who, topics}) => {
-        Fire.shared.getUserData(firebase.auth().currentUser.email).then(({id}) => {
-            const userDoc = this.firestore.collection("users").doc(id)
+    save = async ({id, descrip, title, image}) => {
+        let remoteUri;
+        if (image) {
+
+            remoteUri = await this.uploadPhotoAsync(image)
+        }
+        else {
+            remoteUri = " "
+        }
+            const userDoc = this.firestore.collection("projects").doc(id)
             userDoc.update({
-                name,
-                shortBio,
-                who,
-                topics,
+                descrip, 
+                title, 
+                image: remoteUri, 
             });
-        })
+
         
     }
     addUser = async ({ name, email, who, shortBio, projects, topics }) => {

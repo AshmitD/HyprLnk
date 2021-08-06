@@ -201,19 +201,31 @@ renderHeader= () => {
               style={styles.coverImage}
             /> */}
             <View style={styles.metaInfo}>
+            <TouchableOpacity style = {styles.avatar}>   
+         
+          {item.projects.image && <Image source={{ uri: item.projects.image }} style={styles.avatar}></Image>
+               
+                 /* {this.state.projectNames.length !== 0 &&   <DropDownPicker style={{
+                            backgroundColor: '#3772ff',padding: 25, width: '100%',
+                            }}
+                            items={this.state.projectNames}
+                                containerStyle={{height: 40, width: '55%'}}
+                                onChangeItem={selectedProjectName => this.setState({ selectedProjectName })}
+                            />} */}
+                            
+            
+
+          </TouchableOpacity>
               {console.log("this is item", item)}
-              <Text style={styles.title}>{`${item.projects.title}`}
-              </Text>
-              <Text style={styles.title}>{`${item.projects.descrip}`}
-              </Text>
-              <Text style={styles.title}>{`${item.projects.topics.toString().toUpperCase()}`}
-              </Text>
-              <Text style={styles.title}>{`${item.projects.descrip}`}
+              <View style={styles.infoBlurb}>
+              <Text style={styles.header}>{`${item.projects.title}`}
               </Text>
             
-              <Text style={styles.title}>{`${item.projects.name}`} 
-
-              </Text>
+              <Text style={styles.tag}>{`${item.projects.topics.toString().toUpperCase()}`}
+              </Text></View>
+             
+            
+         
             </View>
             </TouchableOpacity>
           </View>
@@ -230,26 +242,66 @@ const styles = StyleSheet.create({
    flex:1,
     backgroundColor: '#f8f8f8',
     alignItems: 'center', 
-    width: '100%'
+    width: '100%',
+    textAlign: 'center',
+    justifyContent: 'center',
+    alignContent: 'center',
+
   },
   text: {
 
-    fontSize: 20,
-    color: '#101010',
+    fontSize: 22,
+      color: '#101010',
     marginTop: 60,
+    marginBottom: 10, 
     fontWeight: '700',
-    width: '100%'
+    width: '100%',
+    textAlign: 'center',
+    textTransform: 'uppercase',
+  
   },
   listItem: {
     marginTop: 10,
     padding: 20,
-    alignItems: 'center',
+    alignItems: "flex-start",
     backgroundColor: '#fff',
-    width: '100%'
+    marginLeft: 'auto',
+    marginRight: 'auto',
+    position: 'relative',
+    width: '90%',
+    borderRadius: 10,
+    height: 'auto',
   },
   listItemText: {
     flex:1,
     fontSize: 18,
     width: '100%'
+  },
+  metaInfo: {
+display: 'flex',
+    flexDirection: 'row',
+  },
+  header: {
+    fontSize: 20,
+    textAlign: 'left',
+    flex: 1,
+    flexWrap: 'wrap'
+  },
+  avatar: {
+    width: 100,
+    height: 100,
+    borderRadius: 50,
+    alignSelf: 'center',
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#fff',
+    marginRight: 20,
+  },
+  infoBlurb: {
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'flex-start', 
+    justifyContent: "space-evenly",
+
   }
 })

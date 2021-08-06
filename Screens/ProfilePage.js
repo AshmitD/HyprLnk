@@ -3,6 +3,7 @@ import { View, Image, FlatList, Text, TextInput, StyleSheet, TouchableOpacity } 
 import firebase from 'firebase'
 import Fire from '../Fire'
 
+
 import { Alert } from 'react-native'
 import { Ionicons } from '@expo/vector-icons'
 import DropDownPicker from 'react-native-dropdown-picker';
@@ -45,12 +46,24 @@ export default class ProfilePage extends React.Component {
       ],
       { cancelable: false }
     );
-
   }
   renderProj = (project) => {
+
     console.log("This is the project", project)
     return (
-      <View style={{alignItems: 'center',width: '80%', paddingVertical: 15, borderBottomColor: '#3772ff', borderBottomWidth: 4,alignSelf: 'center',flexDirection: 'row',  }}><Text style={{ width: '70%',fontSize: 16, color: '#3772ff',}}>{project.proj.title}</Text><TouchableOpacity onPress={() => this.deleteProject(project.proj)}><Ionicons style = {{left: '300%'}}color = '#FA4D50' size = {25} name = "ios-close-circle-outline"></Ionicons></TouchableOpacity></View>
+      <View style={{alignItems: 'center',width: '80%', paddingVertical: 15, borderBottomColor: '#3772ff', borderBottomWidth: 4,alignSelf: 'center',flexDirection: 'row',  }}>
+
+        <TouchableOpacity onPress={() => this.props.navigation.navigate('ViewProfile', {
+                  otherParam: project
+                })}>
+                <Text style={{ width: '70%',fontSize: 16, color: '#3772ff',}}>{project.proj.title}</Text>
+      <TouchableOpacity 
+   onPress={() => this.props.navigation.navigate('CreateProject', {
+    otherParam: project
+  })}
+      ><Text>Edit</Text>
+      </TouchableOpacity>
+      </TouchableOpacity></View>
     )
   }
 
@@ -69,10 +82,10 @@ export default class ProfilePage extends React.Component {
     })
   }
 
-  saveFromPfp = () => {
-    console.log("This is who after drop", this.state.who)
-    Fire.shared.save({ 'name': this.state.name, 'shortBio': this.state.shortBio, 'who': this.state.who.label, 'topics': this.state.topics })
-  }
+  // saveFromPfp = () => {
+  //   console.log("This is who after drop", this.state.who)
+  //   Fire.shared.save({ 'name': this.state.name, 'shortBio': this.state.shortBio, 'who': this.state.who.label, 'topics': this.state.topics })
+  // }
 
   signOutUser = () => {
     firebase.auth().signOut()
@@ -105,10 +118,7 @@ export default class ProfilePage extends React.Component {
         renderItem={({ item }) => this.renderProj(item)}
         showsVerticalScrollIndicator={false} />
 
-<TouchableOpacity onPress={() => this.saveFromPfp()} style = {{backgroundColor: '#3772ff', width: '80%', alignSelf: 'center', marginBottom: 75,paddingVertical: 15, borderRadius: 15}}>
 
-<Text style={{ color: 'white', textAlign: 'center', fontSize: 21 }}>SAVE</Text>
-</TouchableOpacity>
         </View>
       
 
