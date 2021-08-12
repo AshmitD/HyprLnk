@@ -33,7 +33,8 @@ export default class ChatScreen extends React.Component {
 
     return {
       _id: Fire.shared.uid,
-      name: this.state.currUserName
+      name: this.state.currUserName,
+      email: firebase.auth().currentUser.email
     }
 
 
@@ -55,7 +56,7 @@ export default class ChatScreen extends React.Component {
   render() {
     console.log("Thisi s messages", this.state.messages)
     console.log("This i suer", this.user)
-    const chat = <GiftedChat style={{ zIndex: -1, position: "absolute" }} messages={this.state.messages} onSend={(messages) => Fire.shared.send(messages, this.state.currID, this.user)} user={this.user} />
+    const chat = <GiftedChat style={{ zIndex: -1, position: "absolute" }} messages={this.state.messages} onSend={(messages) => Fire.shared.send(messages, this.state.currID, this.user,firebase.auth().currentUser.email)} user={this.user} />
 
     return (
 

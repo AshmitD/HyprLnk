@@ -316,7 +316,8 @@ class Fire {
             this.currMessage(chatID).set({
                 text: message['text'],
                 timestamp: message['timestamp'],
-                user: message['user']
+                user: message['user'],
+                seenByUserThatDidntSend: false
             })
         })
     }
@@ -484,7 +485,7 @@ class Fire {
             })
         })
     }
-    addProject = async ({ title, descrip, topics, numStudents }) => {
+    addProject = async ({ title, descrip, topics, numStudents, signUpLink }) => {
     
 return this.getUserData(firebase.auth().currentUser.email).then((user) =>{
             console.log("Do you get here?v4", user)
@@ -494,6 +495,7 @@ return this.getUserData(firebase.auth().currentUser.email).then((user) =>{
                 descrip: descrip,
                 topics: topics,
                 name: user.user.name,
+                signUpLink: signUpLink,
                 repEmail: firebase.auth().currentUser.email,
                 numStudents:numStudents
             })  .catch(function (error) {

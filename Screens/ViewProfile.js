@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, Modal, TextInput, TouchableHighlight, FlatList, Image, Text, StyleSheet, TouchableOpacity } from 'react-native'
+import { View, Modal, TextInput, TouchableHighlight, FlatList, Image, Text, StyleSheet, TouchableOpacity, Linking } from 'react-native'
 import { Ionicons } from '@expo/vector-icons'
 import moment from 'moment'
 import firebase from 'firebase'
@@ -23,7 +23,7 @@ export default class ViewProfile extends React.Component {
         // this.state.club.email
         // firebase.auth().current.club.email
         console.log("This is email in handle", this.state.club.repEmail, firebase.auth().currentUser.email)
-        Fire.shared.addChat({ "email1": this.state.club.email, "email2": firebase.auth().currentUser.email }).then((thisID) => {
+        Fire.shared.addChat({ "email1": this.state.club.repEmail, "email2": firebase.auth().currentUser.email }).then((thisID) => {
             console.log("this is id in handle chat", thisID)
             this.props.navigation.navigate('ChatScreen', {
                 "id": thisID, "name": this.state.club.name
@@ -45,7 +45,9 @@ export default class ViewProfile extends React.Component {
                         <Ionicons name="ios-arrow-round-back" size={24} color="#24305e"></Ionicons>
                     </TouchableOpacity>
                     <View style={styles.avatar}>
-                        <Text style={{ fontSize: 35, color: "#3772ff", textAlign: 'center', alignItems: 'center' }}>AS</Text>
+                    {!this.state.club.image &&  <Text style={{ fontSize: 35, color: "#3772ff", textAlign: 'center', alignItems: 'center' }}>{this.state.club.title.charAt(0)}</Text> }
+          {this.state.club.image && <Image source={{ uri: this.state.club.image }} style={styles.avatar}></Image>}
+    
                     </View>
                     <Text style={styles.name} >{this.state.club.title}</Text>
                     <Text style={styles.description}>{this.state.club.descrip}</Text>
@@ -53,15 +55,16 @@ export default class ViewProfile extends React.Component {
                     </View>
 
                 </View>
-                <TouchableOpacity style={{ backgroundColor: '#fff', width: '80%', alignSelf: 'center', paddingVertical: 15, borderRadius: 15 }}>
-                  
-                </TouchableOpacity>
-
+              
                 <View style={styles.content}>
                     <TouchableOpacity onPress={() => this.handleChat()} style={{ backgroundColor: '#3772ff', width: '80%', alignSelf: 'center', marginTop: '5%', paddingVertical: 15, borderRadius: 15 }}>
 
                         <Text style={{ color: '#fff', textAlign: 'center', fontWeight: '500', fontSize: 21 }}>CHAT WITH Club Rep</Text>
                     </TouchableOpacity>
+                    <TouchableOpacity onPress={() => Linking.openURL(this.state.club.signUpLink)} style={{ backgroundColor: '#3772ff', width: '80%', alignSelf: 'center', marginTop: '5%', paddingVertical: 15, borderRadius: 15 }}>
+
+<Text style={{ color: '#fff', textAlign: 'center', fontWeight: '500', fontSize: 21 }}>SIGN UP HERE</Text>
+</TouchableOpacity>
                 </View>
 
 
@@ -111,17 +114,15 @@ const styles = StyleSheet.create({
       
     },
     avatar: {
-        width: 130,
-        height: 130,
-        borderRadius: 63,
+        width: 100,
+        height: 100,
+        borderRadius: 50,
         alignSelf: 'center',
-
-        marginTop: 25,
         alignItems: 'center',
         justifyContent: 'center',
-        backgroundColor: '#fff'
-    },
+        backgroundColor: '#fff',
 
+      },
     body: {
         marginTop: 40,
     },

@@ -1,13 +1,18 @@
 import firebase from 'firebase';
+import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
+
+import { Ionicons } from '@expo/vector-icons'
 import React, { useState } from 'react';
 import {
   StyleSheet,
   Text,
   View,
   FlatList,
+  Linking,
   ActivityIndicator,
   Image, 
-  TextInput
+  TextInput,
+  Modal
 } from 'react-native';
 import filter from 'lodash.filter';
 import { topic } from 'firebase-functions/lib/providers/pubsub';
@@ -42,6 +47,7 @@ export default class HomeScreen extends React.Component {
         arrWithAllTopics: []
     }
     this.fillUsers()
+    this.getUserName()
 }
   fillUsers = () => {
     let everyone = []
@@ -72,9 +78,16 @@ console.log("This is t", t)
  
  
 };
- 
+ getUserName = () => {
+  Fire.shared.getUserData(firebase.auth().currentUser.email).then(({ user }) => {
+    this.state.name = user["name"]
 
+  })
+ }
 
+signOutUser = () => {
+  firebase.auth().signOut()
+}
 contains = ({ title, descrip, topics }, text) => {
   
   const formattedQuery = (text.toLowerCase());
@@ -126,6 +139,33 @@ console.log("this is name and formatted query", descrip, formattedQuery)
    
 // }
 
+openModal = () => {
+  this.setState({ modalForSideBar: true });
+}
+
+closeModal() {
+  this.setState({ modalForSideBar: false });
+}
+toggleModal() {
+  if (this.state.modalForSideBar == true) {
+    this.setState({ modalForSideBar: false })
+  } else {
+
+    this.setState({ modalForSideBar: true })
+
+  }
+}
+toggle() {
+  this.setState({
+    modalForSideBar: !this.state.modalForSideBar,
+  });
+}
+
+setModalVisible = (visible, index) => {
+  const arr = this.state.showModalArr
+  arr[index] = visible
+  this.setState({ showModalArr: arr });
+}
 renderHeader= () => {
 
   return (
@@ -145,7 +185,7 @@ renderHeader= () => {
         value={(this.state.setQuery)}
         onChangeText={text => this.handleSearch(text)}
         placeholder="Search"
-        style={{ backgroundColor: '#fff', paddingHorizontal: 20, width:300 }}
+        style={styles.searchBar}
       />
       <View>
       {/* <View style={styles.container}>
@@ -161,7 +201,7 @@ renderHeader= () => {
 }
   render() {
 
-  
+  console.log("this state name", this.state.name)
   
     if (this.state.isLoading) {
       return (
@@ -183,26 +223,52 @@ renderHeader= () => {
 
     return (
       <View style={styles.container}>
-      <Text style={styles.text}>Clubs</Text>
-      
+           <Modal
+          onBackdropPress={this.closeModal}
+          animationIn="slideInLeft"
+          animationOut='slideOutRight'
+
+          transparent={true}
+          visible={this.state.modalForSideBar}
+        >
+            <View>
+            <View style={{ borderBottomColor: "#24305E", borderBottomWidth: 2, borderRightColor: "#222", borderRightWidth: 2, paddingTop: hp("5%"), paddingHorizontal: 15, backgroundColor: '#fff', height: '100%', width: wp('70%') }}>
+              <View style={{ alignItems: 'center', justifyContent: 'flex-start', textAlignVertical: 'center', paddingTop: 25, flexDirection: 'row' }}>
+                <Text style={{ fontSize: 22, color: "#F76C6C" }}>{this.state.name.split(" ")[0]}</Text>
+                <TouchableOpacity style={{}} onPress={() => { this.toggle() }}><Ionicons size={45} color={"#24305E"} name="ios-close"></Ionicons></TouchableOpacity>
+              </View>
+              <Text style={{ fontSize: 16, color: "#24305E" }}>{firebase.auth().currentUser.email}</Text>
+              <TouchableOpacity onPress={() => this.props.navigation.navigate("MyProfile")} style={{ flexDirection: 'row', alignItems: 'center', marginTop: hp("5%") }}><Ionicons size={35} color={"#24305E"} name="ios-person"></Ionicons><Text style={{ marginLeft: wp('5%'), fontSize: 20, color: "#24305E" }}>My Profile</Text></TouchableOpacity>
+              <TouchableOpacity onPress={() => Linking.openURL('http://thestarswithinreach.com')} style={{ flexDirection: 'row', alignItems: 'center', marginTop: hp("5%") }}><Ionicons size={35} color={"#24305E"} name="ios-information-circle"></Ionicons><Text style={{ marginLeft: wp('5%'), fontSize: 20, color: "#24305E" }}>About Us</Text></TouchableOpacity>
+              <TouchableOpacity onPress={() => Linking.openURL('http://thestarswithinreach.com/privacy')} style={{ flexDirection: 'row', alignItems: 'center', marginTop: hp("5%") }}><Ionicons size={35} color={"#24305E"} name="ios-paper"></Ionicons><Text style={{ marginLeft: wp('5%'), fontSize: 20, color: "#24305E" }}>Privacy Policy</Text></TouchableOpacity>
+              <TouchableOpacity onPress={this.signOutUser} style={{ flexDirection: 'row', alignItems: 'center', marginTop: hp("5%") }}><Ionicons size={35} color={"#24305E"} name="ios-log-out"></Ionicons><Text style={{ marginLeft: wp('5%'), fontSize: 20, color: "#24305E" }}>Logout</Text></TouchableOpacity>
+             
+            </View>
+
+          </View></Modal>
+    
+        
+  <View style={styles.pageHeader}>
+    <Text style={styles.text}>Clubs</Text>
+    {/* <TouchableOpacity  style = {styles.icon} onPress={() => { console.log("Does it get here?"), this.toggle() }}> */}
+<TouchableOpacity onPress={() => { console.log("Does it get here?"), this.toggle() }} style = {styles.icon}><Ionicons  size={36} color={"black"} name="ios-menu"></Ionicons></TouchableOpacity>
+    {/* </TouchableOpacity> */}
+  
+</View>
       <FlatList
       ListHeaderComponent={this.renderHeader}
-
+      style={styles.list}
         data={this.state.setData}
         keyExtractor={item => item.first}
         renderItem={({ item }) => (
-          
+        
           <View style={styles.listItem}>
               <TouchableOpacity onPress={() => this.props.navigation.navigate('ViewProfile', {
-                  otherParam: item.projects
-                })}>
-            {/* <Image
-              source={{ uri: item.picture.thumbnail }}
-              style={styles.coverImage}
-            /> */}
+                  otherParam: item.projects})}>
+           
             <View style={styles.metaInfo}>
-            <TouchableOpacity style = {styles.avatar}>   
-         
+            <View style = {styles.avatar}>   
+            {!item.projects.image &&  <Text style={{ fontSize: 25, color: "#3772ff", textAlign: 'center', alignItems: 'center' }}>{item.projects.title.charAt(0)}</Text> }
           {item.projects.image && <Image source={{ uri: item.projects.image }} style={styles.avatar}></Image>
                
                  /* {this.state.projectNames.length !== 0 &&   <DropDownPicker style={{
@@ -211,18 +277,21 @@ renderHeader= () => {
                             items={this.state.projectNames}
                                 containerStyle={{height: 40, width: '55%'}}
                                 onChangeItem={selectedProjectName => this.setState({ selectedProjectName })}
-                            />} */}
+                          />} */}
                             
             
 
-          </TouchableOpacity>
+          </View>
               {console.log("this is item", item)}
               <View style={styles.infoBlurb}>
+             
               <Text style={styles.header}>{`${item.projects.title}`}
               </Text>
-            
-              <Text style={styles.tag}>{`${item.projects.topics.toString().toUpperCase()}`}
-              </Text></View>
+        
+              <Text style={styles.tag}>{`${item.projects.topics.toString().toUpperCase().split(',').join(' · ')}`}
+              </Text>
+
+              </View>
              
             
          
@@ -230,7 +299,8 @@ renderHeader= () => {
             </TouchableOpacity>
           </View>
         )}
-      />
+      /> 
+      
     </View>
   
     )
@@ -239,43 +309,78 @@ renderHeader= () => {
 }
 const styles = StyleSheet.create({
   container: {
-   flex:1,
-    backgroundColor: '#f8f8f8',
-    alignItems: 'center', 
-    width: '100%',
-    textAlign: 'center',
-    justifyContent: 'center',
-    alignContent: 'center',
+   
 
+    width: "100%",
+    alignItems: "center"
+   
+  },
+  searchBar: {
+    backgroundColor: '#fff', 
+    paddingHorizontal: 20, 
+    paddingVertical: 20,
+    width: "100%",
+    borderRadius: 40,
+    borderColor: '#222',
+    borderWidth: 2, 
+    position: 'relative',
+    marginHorizontal: 'auto',
+    alignContent: 'center',
+    shadowColor: "#000",
+shadowOffset: {
+	width: 0,
+	height: 2,
+},
+shadowOpacity: 0.25,
+shadowRadius: 3.84,
+
+elevation: 5,
   },
   text: {
-
     fontSize: 22,
-      color: '#101010',
-    marginTop: 60,
-    marginBottom: 10, 
+    color: '#101010',
     fontWeight: '700',
     width: '100%',
     textAlign: 'center',
     textTransform: 'uppercase',
-  
+    width: "20%",
+
   },
+
+  hamburger: {
+    
+  },
+  icon:{
+   
+  },
+  pageHeader: {
+   flexDirection: "row-reverse",
+   alignItems: "center",
+   marginTop: hp(5),
+  },
+  list: {
+    flexDirection: 'column',
+    padding: 10,
+    width: wp(100),
+    position: 'relative',
+    marginHorizontal: 'auto',
+  },  
   listItem: {
-    marginTop: 10,
+    marginVertical: 10,
     padding: 20,
     alignItems: "flex-start",
     backgroundColor: '#fff',
     marginLeft: 'auto',
     marginRight: 'auto',
     position: 'relative',
-    width: '90%',
-    borderRadius: 10,
+    borderRadius: 0,
     height: 'auto',
+    backgroundColor: "rgba(55, 115, 255, 0.05)",
+    borderRadius: 20,
   },
   listItemText: {
     flex:1,
     fontSize: 18,
-    width: '100%'
   },
   metaInfo: {
 display: 'flex',
@@ -284,24 +389,45 @@ display: 'flex',
   header: {
     fontSize: 20,
     textAlign: 'left',
-    flex: 1,
-    flexWrap: 'wrap'
   },
   avatar: {
-    width: 100,
-    height: 100,
-    borderRadius: 50,
+    width: 120,
+    height: 120,
+    borderRadius: 1000,
     alignSelf: 'center',
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: '#fff',
-    marginRight: 20,
+    borderColor: '#222',
+    borderWidth: 3,
+    backgroundColor: "#fff",
+    shadowColor: "#000",
+shadowOffset: {
+	width: 0,
+	height: 2,
+},
+shadowOpacity: 0.25,
+shadowRadius: 3.84,
+
+elevation: 5,
   },
   infoBlurb: {
     display: 'flex',
     flexDirection: 'column',
-    alignItems: 'flex-start', 
+    alignItems: 'center', 
     justifyContent: "space-evenly",
-
+    width: wp(54.5),
+    left: 10,
+  },
+  header: {
+    textAlign: 'center',
+    marginVertical: 10,
+    fontSize: 22,
+  },
+  tag: {
+    textAlign: 'center',
+    marginVertical: 10,
+    textTransform: 'capitalize',
+    fontWeight: "500",
+    fontSize: 16,
   }
 })

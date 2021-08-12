@@ -51,19 +51,20 @@ export default class ProfilePage extends React.Component {
 
     console.log("This is the project", project)
     return (
-      <View style={{alignItems: 'center',width: '80%', paddingVertical: 15, borderBottomColor: '#3772ff', borderBottomWidth: 4,alignSelf: 'center',flexDirection: 'row',  }}>
+      <View style={{alignItems: 'center',width: '80%',  paddingVertical: 15, borderBottomColor: '#3772ff', borderBottomWidth: 4,alignSelf: 'center',flexDirection: 'row',  }}>
 
         <TouchableOpacity onPress={() => this.props.navigation.navigate('ViewProfile', {
-                  otherParam: project
+                  otherParam: project.proj
                 })}>
-                <Text style={{ width: '70%',fontSize: 16, color: '#3772ff',}}>{project.proj.title}</Text>
+                <Text style={{ width: '100%',fontSize: 16, color: '#3772ff',}}>{project.proj.title}</Text>
+              </TouchableOpacity>
       <TouchableOpacity 
    onPress={() => this.props.navigation.navigate('CreateProject', {
     otherParam: project
-  })}
+  })} style = {{textAlign: 'right'}}
       ><Text>Edit</Text>
       </TouchableOpacity>
-      </TouchableOpacity></View>
+  </View>
     )
   }
 
@@ -97,18 +98,21 @@ export default class ProfilePage extends React.Component {
         <View style={styles.header}>
       
          
-                       
+             <View style ={{flexDirection: 'row'}}>
 
-          <View style={styles.avatar}>
-            <Text style={{ fontSize: 35, color: "#3772ff", textAlign: 'center', alignItems: 'center' }}>{this.state.name.charAt(0)}</Text><TouchableOpacity onPress ={() => this.props.navigation.navigate("AddClub", {ow: 5, hello: () => {console.log('bro'); return Promise.resolve()}})} style={{  paddingTop:25, left: "100%" }}><Ionicons size={36} style = {{fontWeight: "800"}}color={"#24305E"}  name="ios-add-circle-outline"></Ionicons></TouchableOpacity>
+        <View style={styles.avatar}>
+            <Text style={{ fontSize: 35, color: "#3772ff", textAlign: 'center', alignItems: 'center' }}>{this.state.name.charAt(0)}</Text>
+            
           </View>
-          <TextInput style={styles.name} onChangeText={name => this.setState({ name })} value={this.state.name}></TextInput>
+          <TouchableOpacity onPress ={() => this.props.navigation.navigate("AddClub", {ow: 5, hello: () => {console.log('bro'); return Promise.resolve()}})} style={{  paddingTop:25}}><Ionicons size={36} style = {{fontWeight: "800"}}color={"#24305E"}  name="ios-add-circle-outline"></Ionicons></TouchableOpacity>
+          </View>          
+          <Text style={styles.name}>{this.state.name}</Text>
          
        
 
 
         </View>
-
+       
         <View style={styles.content}>
        <Text style ={{fontSize: 24, color: '#3772ff', alignSelf: 'center', textTransform: 'uppercase'}}>My Clubs</Text>
         <FlatList 
@@ -212,7 +216,6 @@ const styles = StyleSheet.create({
     height: 130,
     borderRadius: 63,
     alignSelf: 'center',
-
     marginTop: 25,
     alignItems: 'center',
     justifyContent: 'center',

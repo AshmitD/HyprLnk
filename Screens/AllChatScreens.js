@@ -17,7 +17,7 @@ export default class HomeScreen extends React.Component {
     this.state = {
       chats: [],
       modalVisible: false,
-
+      numReadMessages: [],
     }
     Fire.shared.getUserData(firebase.auth().currentUser.email).then(({ user }) => {
       console.log("hi", firebase.auth().currentUser.email)
@@ -66,7 +66,13 @@ export default class HomeScreen extends React.Component {
 
     return Promise.all(promises);
   }
-
+  fillReadMessages = () => {
+    let arr = []
+    this.state.chats.forEach(chat => {
+      everyone.push({ 'projects': doc.data(), 'id': doc.id })
+      // doc.data() is never undefined for query doc snapshots
+  });
+  }
   sort = () => {
     const temp = this.state.chats
     console.log('himh', temp)
@@ -93,7 +99,7 @@ export default class HomeScreen extends React.Component {
     firebase.auth().signOut()
   }
   renderChat = chat => {
-    console.log("this is newest message", chat.newestMessage)
+    console.log("this is chat 324", chat)
 
     let chars = chat.name.split(" ")[0].substring(0, 1)
     if (chat.name.split(" ").length > 1) {
@@ -122,7 +128,7 @@ export default class HomeScreen extends React.Component {
              {chat.newestMessage !== undefined && <Text style={styles.message}>{chat.newestMessage.text}</Text>}
             </View>
             <View style={styles.chatNotifications}>
-              <View style={{
+             {chat["newestMessage"]["user"]["email"] !== firebase.auth().currentUser.email &&  chat["newestMessage"]["user"]["seenByUserThatDidntSend"]== false &&  <View style={{
                 alignItems: "center",
                 justifyContent: "center",
                 height: 30,
@@ -130,8 +136,8 @@ export default class HomeScreen extends React.Component {
                 backgroundColor: "#3772ff",
                 borderRadius: "100%",
               }}>
-                <Text style={styles.chatNotificationsText}>2</Text>
-              </View>
+               <Text style={styles.chatNotificationsText}>1</Text>
+              </View> }
             </View>
           </View>
         </TouchableOpacity>
@@ -142,10 +148,10 @@ export default class HomeScreen extends React.Component {
   render() {
 
     LayoutAnimation.easeInEaseOut()
-    console.log('these are the chats from mom', this.state.chats)
+  
 
     LayoutAnimation.easeInEaseOut()
-    console.log('these are the chats from mom', this.state.chats)
+   
     return (
       <View style={styles.container}>
         <View style={styles.header}>
@@ -165,7 +171,7 @@ export default class HomeScreen extends React.Component {
           borderTopLeftRadius: "35%",
           borderTopRightRadius: "35%",
         }}>
-             <TouchableOpacity onPress={this.signOutUser} style={{ flexDirection: 'row', alignItems: 'center', marginTop: hp("5%") }}><Ionicons size={35} color={""} name="ios-log-out"></Ionicons><Text style={{ marginLeft: wp('5%'), fontSize: 20, color: "#24305E" }}>Logout</Text></TouchableOpacity>
+             {/* <TouchableOpacity onPress={this.signOutUser} style={{ flexDirection: 'row', alignItems: 'center', marginTop: hp("5%") }}><Ionicons size={35} color={""} name="ios-log-out"></Ionicons><Text style={{ marginLeft: wp('5%'), fontSize: 20, color: "#24305E" }}>Logout</Text></TouchableOpacity> */}
           {this.state.chats.length == 0 && <View style={{ alignSelf: 'center' }}>
             <Text style={{ textAlign: 'center', color: "#F8E9A1", fontSize: 20, paddingHorizontal: 25, marginTop: "25%" }}>"Click on anyone's name to start                         chat!!"</Text>
           </View>}
@@ -194,7 +200,7 @@ const styles = StyleSheet.create({
     width: "100%",
   },
   header: {
-    backgroundColor: "#3772ff",
+    backgroundColor: "black",
     width: "100%",
     alignItems: "center",
     justifyContent: "flex-end",

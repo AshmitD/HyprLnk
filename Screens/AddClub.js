@@ -20,6 +20,7 @@ export default class AddClub extends React.Component {
         error: null,
         topics: [],
         numStudents: null,
+        signUp: '',
     }
  //  this.fillUser()
    }
@@ -42,7 +43,7 @@ export default class AddClub extends React.Component {
             Alert.alert("Please enter some topics.")
         }else {
 
-        return Fire.shared.addProject({title: this.state.title, descrip: this.state.descrip, topics: this.state.topics, name: this.state.name, numStudents: this.state.numStudents})
+        return Fire.shared.addProject({title: this.state.title, descrip: this.state.descrip, topics: this.state.topics, name: this.state.name, numStudents: this.state.numStudents, signUpLink: this.state.signUp})
         .then(userCredentials => {
          
             const { params } = this.props.navigation.state;
@@ -109,12 +110,21 @@ export default class AddClub extends React.Component {
                     <TextInput
                     style = {styles.longText}
                   keyboardType = 'numeric'
-                    multiline = {true} numberOfLines={4} 
+                    multiline = {true} numberOfLines={1} 
                     onChangeText ={numStudents => this.setState({numStudents})}
                     value = {this.state.resources}
                     ></TextInput>
                 </View>
-            
+
+                <View style = {{marginTop: 32}}>
+                    <Text style = {styles.inputTitle}>Sign Up Link:</Text>
+                    <TextInput
+                    style = {styles.input}
+                   
+              
+                    onChangeText ={signUp => this.setState({signUp})}
+                    value = {this.state.signUp}></TextInput>
+                </View>
                 </View>
                     <View style = {{width: 370, marginLeft: 20, marginBottom: 32, zIndex: -1}}>
                         <Text style = {styles.lastInputTitle}>What category describes your club?</Text>
