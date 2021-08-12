@@ -92,8 +92,8 @@ const AppTabNavigator = createBottomTabNavigator(
         showLabel: false,
         lazy: false,
         style: {
-          backgroundColor: '#3772ff',
-
+          backgroundColor: "rgba(55, 115, 255, 1)",
+          height: 50,
         }
       } 
     } 
