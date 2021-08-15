@@ -65,7 +65,7 @@ export default class ViewProfile extends React.Component {
             <Ionicons
               name="ios-arrow-round-back"
               size={24}
-              color="#fff"
+              color="#3772ff"
             ></Ionicons>
           </TouchableOpacity>
           <View style={styles.avatar}>
@@ -159,7 +159,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     top: "10%",
     left: "2%",
-    backgroundColor: "#000",
+
     display: "flex",
     justifyContent: "center",
     alignContent: "center",

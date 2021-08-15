@@ -97,6 +97,22 @@ export default class ProfilePage extends React.Component {
     return (
       <View style={styles.container}>
         <View style={styles.header}>
+          <TouchableOpacity
+            onPress={() => this.props.navigation.navigate("Home")}
+            style={{
+              width: 50,
+              height: 50,
+              alignItems: "center",
+              backgroundColor: "#fff",
+              display: "flex",
+              justifyContent: "center",
+              alignContent: "center",
+              borderRadius: 50,
+              color: "#3772ff",
+            }}
+          >
+            <Ionicons name="ios-arrow-round-back" size={32} color={"#3772ff"} />
+          </TouchableOpacity>
           <TouchableOpacity style={styles.avatar} onPress={this.pickImage}>
             {!this.state.image && (
               <View style={styles.avatar}>
