@@ -8,7 +8,21 @@ class Fire {
             firebase.initializeApp({});
         }
     }
+toggleSeenBy = async ( chatID, newestMessage) => {
+    console.log("does it get to aksha", newestMessage)
+    this.currMessage(chatID).set({
 
+        "seenByUserThatDidntSend": !newestMessage['seenByUserThatDidntSend'],
+        "text": newestMessage[
+            'text'],                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            
+        "timestamp": 1628829712182,
+        "user":  {
+          "_id": "WLmkdZuhIWPGB4HdCSc77kkEbLj1",
+          "email": "ashmitd1@gmail.com",
+          "name": "Ashmit",
+        }
+    })
+}
     addPost = async ({ projectID, projectName, text, localUri, name }) => {
         let remoteUri;
         if (localUri) {

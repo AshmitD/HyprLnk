@@ -99,7 +99,7 @@ export default class HomeScreen extends React.Component {
     firebase.auth().signOut()
   }
   renderChat = chat => {
-    console.log("this is chat 324", chat)
+    console.log("this is chat not owrking", chat)
 
     let chars = chat.name.split(" ")[0].substring(0, 1)
     if (chat.name.split(" ").length > 1) {
@@ -108,7 +108,7 @@ export default class HomeScreen extends React.Component {
     return (
       <View style={styles.feedItem}>
         <TouchableOpacity onPress={() => this.props.navigation.navigate('ChatScreen', {
-          "id": chat["id"], "name": chat["name"],
+          "id": chat["id"], "name": chat["name"], "newestMessage": {chat}
         })} style={{ marginTop: 0 }}>
           <View style={styles.chatContainer}>
             <View style={styles.chatProfile}>
@@ -128,7 +128,7 @@ export default class HomeScreen extends React.Component {
              {chat.newestMessage !== undefined && <Text style={styles.message}>{chat.newestMessage.text}</Text>}
             </View>
             <View style={styles.chatNotifications}>
-             {chat["newestMessage"]["user"]["email"] !== firebase.auth().currentUser.email &&  chat["newestMessage"]["user"]["seenByUserThatDidntSend"]== false &&  <View style={{
+             {chat["newestMessage"]["user"]["email"] !== firebase.auth().currentUser.email &&  chat["newestMessage"]["seenByUserThatDidntSend"]== false &&  <View style={{
                 alignItems: "center",
                 justifyContent: "center",
                 height: 30,
@@ -162,15 +162,7 @@ export default class HomeScreen extends React.Component {
           </View>
         </View>
 
-        <View style={{
-          flex: 6,
-          backgroundColor: "#eee",
-          width: "100%",
-          position: "relative",
-          top: -30,
-          borderTopLeftRadius: "35%",
-          borderTopRightRadius: "35%",
-        }}>
+        <View style={styles.mainContainer}>
              {/* <TouchableOpacity onPress={this.signOutUser} style={{ flexDirection: 'row', alignItems: 'center', marginTop: hp("5%") }}><Ionicons size={35} color={""} name="ios-log-out"></Ionicons><Text style={{ marginLeft: wp('5%'), fontSize: 20, color: "#24305E" }}>Logout</Text></TouchableOpacity> */}
           {this.state.chats.length == 0 && <View style={{ alignSelf: 'center' }}>
             <Text style={{ textAlign: 'center', color: "#F8E9A1", fontSize: 20, paddingHorizontal: 25, marginTop: "25%" }}>"Click on anyone's name to start                         chat!!"</Text>
@@ -191,24 +183,29 @@ export default class HomeScreen extends React.Component {
 }
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: "#f8f8f8",
-    flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
-    flexDirection: "column",
-    height: "100%",
     width: "100%",
+    height: "auto",
+    alignItems: "flex-start",
+    flexDirection: "column",
   },
   header: {
-    backgroundColor: "black",
-    width: "100%",
-    alignItems: "center",
-    justifyContent: "flex-end",
-    flex: 0.75,
-    paddingBottom: 40,
+    flexDirection: "row-reverse",
+  
+   alignSelf: "center",
+   marginTop: hp(5),
+   position: 'relative',
+   padding: 10,
+   borderBottomColor: '#222',
+   borderBottomWidth: 2, 
+   width: wp(40),
+   alignItems: 'center',
+   justifyContent: 'space-between',
+   paddingHorizontal: 40,
+   marginHorizontal: "auto",
+   marginBottom: 20,
   },
   linesContainer: {
-    backgroundColor: "transparent",
+    backgroundColor: "#fff",
     width: "100%",
     alignItems: "center",
     justifyContent: "center",
@@ -218,16 +215,16 @@ const styles = StyleSheet.create({
     position: "absolute",
     right: 20,
   },
-  content: {
-
+  mainContainer: {
+    width: "100%",
   },
   heading: {
-    fontSize: 30,
-    textTransform: "uppercase",
-    letterSpacing: 2,
-    paddingHorizontal: 20,
-    marginBottom: 5,
-    color: "#fff",
+    fontSize: 22,
+    color: '#101010',
+    fontWeight: '700',
+    width: "100%",
+    textAlign: 'center',
+    textTransform: 'uppercase',
   },
   chatContainer: {
     borderBottomWidth: 2,
